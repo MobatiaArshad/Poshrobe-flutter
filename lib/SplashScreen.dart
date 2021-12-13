@@ -26,7 +26,7 @@ class _MyHomePageState extends State<MyHomePage> {
         const Duration(seconds: 3),
         () => Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => HomeBase()),
+              MaterialPageRoute(builder: (context) => LoginPage()),
             ));
 
     return Scaffold(
