@@ -9,7 +9,10 @@ class Profile extends StatefulWidget{
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Container(
+      child: Center(
+        child: Text('To Be Implemented Soon!!'),
+      ),
+    );
   }
 }
