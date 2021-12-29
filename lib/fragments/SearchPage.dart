@@ -11,12 +11,15 @@ class SearchPage extends StatefulWidget{
 class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          _topBar(),
-          _searchBar()
-        ],
+    return Scaffold(
+      body: Container(
+        child: Column(
+          children: [
+            _topBar(),
+            _searchBar(),
+            Expanded(child: _gridView())
+          ],
+        ),
       ),
     );
   }
@@ -81,4 +84,87 @@ class _SearchPageState extends State<SearchPage> {
       ),
     );
   }
+}
+
+Widget _gridView(){
+  return Container(
+      height: 800,
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+        itemBuilder: (_, index) => _recommendedListData(),
+        itemCount: 10,
+      ),
+    );
+  
+}
+
+Widget _recommendedListData() {
+  return Padding(
+    padding: const EdgeInsets.all(8.0),
+    child: Container(
+      width: 155,
+      height: 248,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image(
+            image: AssetImage('images/recomended_img.png'),
+            width: 155,
+            height: 173,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Row(
+              children: [
+                Text('Rs 2,999',style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),),
+                Padding(
+                  padding: const EdgeInsets.only(left: 4.0),
+                  child: Text('/ Rental',style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13),),
+                ),
+              ],
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(top: 3.0),
+            child: Row(
+              children: [
+                Text('Rs 28,999',style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16),),
+                Padding(
+                  padding: const EdgeInsets.only(left: 4.0),
+                  child: Text('/ Sale',style: TextStyle(
+                      color: Colors.grey,
+                      fontSize: 13),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: SizedBox(
+              width: 185.0,
+              child: Text(
+                "Embroidered Pista Green Sherwani",
+                maxLines: 4,
+                overflow: TextOverflow.ellipsis,
+                softWrap: false,
+                style: TextStyle(color: Colors.black87, fontSize: 12.0),
+              ),
+            ),
+          ),
+
+        ],
+      ),
+    ),
+  );
 }
