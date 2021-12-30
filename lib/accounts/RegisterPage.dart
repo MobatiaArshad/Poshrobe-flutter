@@ -94,7 +94,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 )),
             Center(
               child: Container(
-                height: MediaQuery.of(context).size.width,
+                height: 420,
                 child: Column(
                   children: [
                     Padding(

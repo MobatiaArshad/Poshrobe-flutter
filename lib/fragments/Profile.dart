@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:poshrob/Resources/AppColors.dart';
+import 'package:poshrob/accounts/LoginPage.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -34,7 +35,7 @@ class _ProfileState extends State<Profile> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Center(child: _cardView(),)
+                Center(child: _cardView(),),
               ],
             ),
           )
@@ -87,6 +88,32 @@ class _ProfileState extends State<Profile> {
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: _subData(),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(bottom: 10.0),
+            child:  Container(
+              width: MediaQuery.of(context).size.width * 0.6,
+              child: ElevatedButton(
+                onPressed: () {
+
+                },
+                style: ElevatedButton.styleFrom(
+                  primary: Color(AppColors.commonOrange),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                  elevation: 3.0,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    'Logout',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ),
+              ),
+            ),
           )
 
         ],
@@ -99,7 +126,7 @@ class _ProfileState extends State<Profile> {
       child: Padding(
         padding: const EdgeInsets.only(left: 15, right: 35),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             GestureDetector(
               // onTap: () => onProfileClick(context), // choose image on click of profile
@@ -122,26 +149,12 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
             ),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                    side: BorderSide(
-                      color: Colors.grey,
-                      width: 2.0,
-                    ),
-                  ),
-                ),
-              ),
-              child: Text('Logout',
-                  style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500)),
-              onPressed: () {},
-            ),
+
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Text('Jhon Doe',
+                  style: TextStyle(color: Colors.black, fontSize: 18)),
+            )
           ],
         ),
       ),

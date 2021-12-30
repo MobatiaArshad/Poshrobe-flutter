@@ -90,9 +90,12 @@ class _LoginPageState extends State<LoginPage> {
             padding: const EdgeInsets.only(top: 50.0),
             child: Image(image: AssetImage('images/app_logo.png')),
           )),
+
+          _socialMedia(),
+
           Center(
             child: Container(
-              height: MediaQuery.of(context).size.width,
+              height: 320,
               child: Column(
                 children: [
                   Padding(
@@ -179,8 +182,9 @@ class _LoginPageState extends State<LoginPage> {
                       child: Text("Login"),
                     ),
                   ),
+
                   _orBox(),
-                  _socialMedia()
+
                 ],
               ),
             ),
