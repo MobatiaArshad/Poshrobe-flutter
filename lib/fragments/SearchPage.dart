@@ -37,6 +37,7 @@ class _SearchPageState extends State<SearchPage> {
                   padding: const EdgeInsets.only(left: 30),
                   child: Image(
                     image: AssetImage('images/hamburger_ico.png'),
+
                   ),
                 ),
                 Image(
@@ -88,30 +89,34 @@ class _SearchPageState extends State<SearchPage> {
 
 Widget _gridView(){
   return Container(
-      height: 800,
-      child: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-        itemBuilder: (_, index) => _recommendedListData(),
-        itemCount: 10,
-      ),
-    );
-  
+    height: 800,
+    child: GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+      itemBuilder: (_, index) => _recommendedListData(),
+      itemCount: 20,
+    ),
+  );
+
 }
 
 Widget _recommendedListData() {
+
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Container(
       width: 155,
       height: 248,
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+
         children: [
-          Image(
-            image: AssetImage('images/recomended_img.png'),
-            width: 155,
-            height: 173,
+          Expanded(
+            child: Image.asset('images/recomended_img.png'),
           ),
+          // Image(
+          //   image: AssetImage('images/recomended_img.png'),
+          //   fit: BoxFit.cover,
+          // ),
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
             child: Row(
@@ -149,19 +154,19 @@ Widget _recommendedListData() {
             ),
           ),
 
-          Padding(
-            padding: const EdgeInsets.only(top: 8.0),
-            child: SizedBox(
-              width: 185.0,
-              child: Text(
-                "Embroidered Pista Green Sherwani",
-                maxLines: 4,
-                overflow: TextOverflow.ellipsis,
-                softWrap: false,
-                style: TextStyle(color: Colors.black87, fontSize: 12.0),
-              ),
-            ),
-          ),
+          // Padding(
+          //   padding: const EdgeInsets.only(top: 8.0),
+          //   child: SizedBox(
+          //     width: 185.0,
+          //     child: Text(
+          //       "Embroidered Pista Green Sherwani",
+          //       maxLines: 4,
+          //       overflow: TextOverflow.ellipsis,
+          //       softWrap: false,
+          //       style: TextStyle(color: Colors.black87, fontSize: 12.0),
+          //     ),
+          //   ),
+          // ),
 
         ],
       ),

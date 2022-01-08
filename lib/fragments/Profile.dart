@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:poshrob/Contact_Us.dart';
 import 'package:poshrob/Resources/AppColors.dart';
 import 'package:poshrob/accounts/LoginPage.dart';
 
@@ -171,11 +172,41 @@ class _ProfileState extends State<Profile> {
               itemCount: profileSubArray.length,
               separatorBuilder: (context, index) =>
                   Divider(height: 1, color: Colors.grey),
-              itemBuilder: (BuildContext context, int index) {
-                return Container(
+              itemBuilder: (BuildContext context, int index) =>
+                InkWell(onTap: () {
+
+                  switch (index) {
+                    case 0:
+                      // executeClosed();
+                      break;
+                    case 1:
+                      // executePending();
+                      break;
+                    case 2:
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => Contact_Us()),
+                      );
+                      break;
+                    case 3:
+                      // executeDenied();
+                      break;
+                    default:
+                      // executeUnknown();
+                  }
+
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(builder: (context) => Contact_Us()),
+                  // );
+                },
+                child: Container(
                   child: _listItem(index),
-                );
-              })),
+                ))
+                // return Container(
+                //   child: _listItem(index),
+                // );
+              )),
     );
   }
 
