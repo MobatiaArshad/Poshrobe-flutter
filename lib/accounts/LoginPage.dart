@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:poshrob/HomeBase.dart';
 import 'package:poshrob/Resources/AppColors.dart';
 import 'package:poshrob/accounts/RegisterPage.dart';
+import 'package:poshrob/sizes.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -13,61 +14,56 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      body: Stack(
-        children: [
-          Container(
-            child: SingleChildScrollView(
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                height: MediaQuery.of(context).size.height,
-                color: Color(AppColors.commonOrange),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Center(child: _loginComponents()),
-                    Center(child: _toRegister())
-                  ],
-                ),
-              ),
-            ),
+      body: SingleChildScrollView(
+        child: Container(
+          width: screenWidth(context),
+          height: screenHeight(context),
+          padding: EdgeInsets.only(
+            top: screenHeight(context, mulBy: 0.03)
           ),
-
-        ],
-      ),
-    );
-  }
-
-  Widget _toRegister() {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 20.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text("Don't have an Account?"),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => RegisterPage()),
-                );
-              },
-              child: Text(
-                "Sign Up Here",
-                style:
-                    TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
-              ),
-            )
-          ],
+          color: Color(AppColors.commonOrange),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _loginComponents(),
+              _toRegister()
+            ],
+          ),
         ),
       ),
     );
   }
 
+  Widget _toRegister() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text("Don't have an Account?"),
+        TextButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => RegisterPage()),
+            );
+          },
+          child: Text(
+            "Sign Up Here",
+            style:
+                TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+        )
+      ],
+    );
+  }
+
   Widget _loginComponents() {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.90,
+      padding: EdgeInsets.symmetric(
+        vertical: screenHeight(context, mulBy: 0.03),
+          horizontal: screenWidth(context, mulBy: 0.08)
+      ),
+      width: screenWidth(context, mulBy: 0.9),
+      height: screenHeight(context, mulBy: 0.75),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.all(
@@ -83,216 +79,185 @@ class _LoginPageState extends State<LoginPage> {
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Center(
-              child: Padding(
-            padding: const EdgeInsets.only(top: 50.0),
-            child: Image(image: AssetImage('images/app_logo.png')),
-          )),
+          Image.asset('images/app_logo.png'),
 
           _socialMedia(),
 
-          Center(
-            child: Container(
-              height: 320,
-              child: Column(
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 30.0, right: 30.0, top: 50),
-                    child: TextField(
-                      onChanged: (value) {
-                        //Do something with the user input.
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Enter Email Address',
-                        contentPadding: EdgeInsets.symmetric(
-                            vertical: 10.0, horizontal: 20.0),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Color(AppColors.grey), width: 1.0),
-                          borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(
-                              color: Color(AppColors.commonOrange), width: 2.0),
-                          borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                        ),
-                      ),
+          Column(
+            children: [
+              TextField(
+                onChanged: (value) {
+                  //Do something with the user input.
+                },
+                decoration: InputDecoration(
+                  hintText: 'Enter Email Address',
+                  contentPadding: EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 20.0),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Color(AppColors.grey), width: 1.0),
+                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                        color: Color(AppColors.commonOrange), width: 2.0),
+                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                  ),
+                ),
+              ),
+              SizedBox(height: screenHeight(context, mulBy: 0.015)),
+              TextField(
+                  onChanged: (value) {
+                    //Do something with the user input.
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'Enter Password',
+                    contentPadding: EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 20.0),
+                    border: OutlineInputBorder(
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(32.0)),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color(AppColors.grey), width: 1.0),
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(32.0)),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: Color(AppColors.commonOrange),
+                          width: 2.0),
+                      borderRadius:
+                      BorderRadius.all(Radius.circular(32.0)),
                     ),
                   ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 30.0, right: 30.0, top: 15),
-                    child: TextField(
-                        onChanged: (value) {
-                          //Do something with the user input.
-                        },
-                        decoration: InputDecoration(
-                          hintText: 'Enter Password',
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 10.0, horizontal: 20.0),
-                          border: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(32.0)),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color(AppColors.grey), width: 1.0),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(32.0)),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide(
-                                color: Color(AppColors.commonOrange),
-                                width: 2.0),
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(32.0)),
-                          ),
-                        ),
-                        keyboardType: TextInputType.visiblePassword,
-                        obscureText: true,
-                        obscuringCharacter: '*'),
-                  ),
-                  const SizedBox(height: 20),
-                  ConstrainedBox(
-                    constraints:
-                        const BoxConstraints.tightFor(width: 270, height: 45),
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
+                  keyboardType: TextInputType.visiblePassword,
+                  obscureText: true,
+                  obscuringCharacter: '*'),
+              SizedBox(height: screenHeight(context, mulBy: 0.04)),
+              ConstrainedBox(
+                constraints:
+                BoxConstraints.tightFor(width: screenWidth(context), height: screenHeight(context, mulBy: 0.07)),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      shape:
+                      MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(50.0),
                           )),
-                          backgroundColor: MaterialStateProperty.all(
-                              Color(AppColors.commonOrange))),
-                      onPressed: () {
+                      backgroundColor: MaterialStateProperty.all(
+                          Color(AppColors.commonOrange))),
+                  
+                  onPressed: () {
 
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => HomeBase()),
-                        );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomeBase()),
+                    );
 
-                      },
-                      child: Text("Login"),
-                    ),
-                  ),
-
-                  _orBox(),
-
-                ],
+                  },
+                  child: Text("Login"),
+                ),
               ),
-            ),
+            ],
           ),
+          _orBox(),
         ],
       ),
     );
   }
 
   Widget _orBox() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 30.0),
-            child: Text(
-              'Forgot Password?',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Color(AppColors.commonOrange)),
-            ),
-          ),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        Text(
+          'Forgot Password?',
+          style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: Color(AppColors.commonOrange)),
+        ),
+      ],
     );
   }
 
   Widget _socialMedia() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 25.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 2,
-                  blurRadius: 3,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Image.asset(
-                'images/fb_ico_png.png',
-                fit: BoxFit.cover,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          width: 60,
+          height: 60,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3),
+                spreadRadius: 2,
+                blurRadius: 3,
+                offset: Offset(0, 3), // changes position of shadow
               ),
-            ),
+            ],
           ),
+          padding: const EdgeInsets.all(12.0),
+          child: Image.asset(
+            'images/fb_ico_png.png',
+            fit: BoxFit.cover,
+          ),
+        ),
 
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 2,
-                  blurRadius: 3,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Image.asset(
-                'images/google_ico.png',
-                fit: BoxFit.cover,
+        Container(
+          width: 60,
+          height: 60,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3),
+                spreadRadius: 2,
+                blurRadius: 3,
+                offset: Offset(0, 3), // changes position of shadow
               ),
-            ),
+            ],
           ),
+          padding: const EdgeInsets.all(12.0),
+          child: Image.asset(
+            'images/google_ico.png',
+            fit: BoxFit.cover,
+          ),
+        ),
 
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 2,
-                  blurRadius: 3,
-                  offset: Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: Image.asset(
-                'images/apple_ico.png',
-                fit: BoxFit.cover,
+        Container(
+          width: 60,
+          height: 60,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3),
+                spreadRadius: 2,
+                blurRadius: 3,
+                offset: Offset(0, 3), // changes position of shadow
               ),
-            ),
+            ],
           ),
-        ],
-      ),
+          padding: const EdgeInsets.all(12.0),
+          child: Image.asset(
+            'images/apple_ico.png',
+            fit: BoxFit.cover,
+          ),
+        ),
+      ],
     );
   }
 }
