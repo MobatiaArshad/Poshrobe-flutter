@@ -9,6 +9,7 @@ import 'package:poshrob/shared_pref.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  var userLoggedIn=HelperFunctions.getUserLoggedIn();
   runApp(const MyApp());
 }
 

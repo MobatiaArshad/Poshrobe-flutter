@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:poshrob/Resources/AppColors.dart';
 import '../sizes.dart';
 
 
 
 showLoaderDialog(BuildContext context){
   AlertDialog alert= AlertDialog(
+    shape: CircleBorder(),
     content:
     Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        CircularProgressIndicator(),
-        SizedBox(height: screenHeight(context, mulBy: 0.03),),
-        Text(
-          "Loading"
+        CircularProgressIndicator(
+          color: Color(AppColors.commonOrange),
         ),
       ],
     ),
