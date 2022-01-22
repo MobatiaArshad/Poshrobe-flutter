@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:poshrob/HomeBase.dart';
 import 'package:poshrob/Resources/AppColors.dart';
 import 'package:poshrob/accounts/RegisterPage.dart';
+import 'package:poshrob/backend_data.dart';
 import 'package:poshrob/sizes.dart';
+import 'package:poshrob/widgets.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -11,6 +13,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController emailId = TextEditingController();
+  TextEditingController password = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -89,9 +93,7 @@ class _LoginPageState extends State<LoginPage> {
           Column(
             children: [
               TextField(
-                onChanged: (value) {
-                  //Do something with the user input.
-                },
+              controller: emailId,
                 decoration: InputDecoration(
                   hintText: 'Enter Email Address',
                   contentPadding: EdgeInsets.symmetric(
@@ -113,9 +115,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: screenHeight(context, mulBy: 0.015)),
               TextField(
-                  onChanged: (value) {
-                    //Do something with the user input.
-                  },
+                  controller: password,
                   decoration: InputDecoration(
                     hintText: 'Enter Password',
                     contentPadding: EdgeInsets.symmetric(
@@ -154,14 +154,37 @@ class _LoginPageState extends State<LoginPage> {
                           )),
                       backgroundColor: MaterialStateProperty.all(
                           Color(AppColors.commonOrange))),
-                  
-                  onPressed: () {
+                  onPressed: () async{
+                    if(emailId.text.isValidEmail()) {
+                      showLoaderDialog(context);
+                      login(emailId.text, password.text).then((value)
+                      {
+                        if(value==200) {
+                          Navigator.pop(context);
+                          Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                          HomeBase()), (Route<dynamic> route) => false);
+                        }
+                        else {
+                          if(value==401) {
+                            Navigator.pop(context);
+                            showAlertDialog1(context, "Invalid Credentials", "Please check the data you entered. Or Register Now.");
+                          }
+                          else{
+                            Navigator.pop(context);
+                            showAlertDialog1(context, "Error Occurred", "Some error occurred. Please try again.");
+                          }
+                        }
+                      }
+                      );
 
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomeBase()),
-                    );
-
+                    }
+                    else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Please check your email."),
+                        ),
+                      );
+                    }
                   },
                   child: Text("Login"),
                 ),
