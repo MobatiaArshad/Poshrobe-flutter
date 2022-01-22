@@ -4,48 +4,21 @@ import 'package:poshrob/accounts/LoginPage.dart';
 import 'package:poshrob/fragments/HomePage.dart';
 import 'package:flutter/services.dart';
 import 'package:poshrob/shared_pref.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  var userLoggedIn=HelperFunctions.getUserLoggedIn();
-  runApp(const MyApp());
+  bool? userLoggedIn= await HelperFunctions.getUserLoggedIn();
+  runApp(
+      MaterialApp(
+    title: 'PoshRobe',
+    home: (userLoggedIn??false)? HomeBase(): LoginPage(),
+  ));
 }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-
-  bool userLoggedIn=false;
-
-  @override
-  void initState() {
-    getLoggedInState();
-    super.initState();
-  }
-
-  getLoggedInState() async{
-    await HelperFunctions.getUserLoggedIn().then((value){
-      setState(() {
-        userLoggedIn=value;
-      });
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'PoshRobe',
-      home: userLoggedIn? HomeBase(): LoginPage(),
-    );
-  }
-}
 
 
 // class MyHomePage extends StatefulWidget {

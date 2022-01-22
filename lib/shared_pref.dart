@@ -15,9 +15,9 @@ class HelperFunctions{
   ///get data
 
 
-  static Future<bool> getUserLoggedIn() async{
+  static Future getUserLoggedIn() async{
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    return await preferences.getBool("ISLOGGEDIN")??false;
+    return await preferences.getBool("ISLOGGEDIN");
   }
 
 
