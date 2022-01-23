@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/rendering.dart';
 import 'package:poshrob/Resources/AppColors.dart';
+import 'package:poshrob/backend/backend_class.dart';
+import 'package:poshrob/backend/backend_data.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,7 +23,7 @@ class _HomePageState extends State<HomePage>
     'Monica Geller'
   ];
 
-  final List<Tab> tabs = <Tab>[
+  final List<Tab> tabs1 = <Tab>[
     new Tab(text: "Sherwani"),
     new Tab(text: "Indo Western"),
     new Tab(text: "Tuxedo"),
@@ -31,12 +33,28 @@ class _HomePageState extends State<HomePage>
     new Tab(text: "Bundi Jacket")
   ];
 
+  List<Tab> tabs=[];
+
+  Future _getHomeContents() async {
+    try {
+      await Future.wait([
+        getHeaderCategories().then(
+                (value) {
+                  value.map((e) => tabs.add(Tab(text: e.name, )));
+                }
+        ),
+      ]);
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   TabController? _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = new TabController(vsync: this, length: tabs.length);
+    _tabController = new TabController(vsync: this, length: tabs1.length);
   }
 
   @override
@@ -47,8 +65,8 @@ class _HomePageState extends State<HomePage>
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
+    return Scaffold(
+      body: Column(
         children: [
           Padding(
             padding: const EdgeInsets.only(top: 50),
@@ -87,7 +105,6 @@ class _HomePageState extends State<HomePage>
                 ],
               )
           )
-
         ],
       ),
     );
@@ -147,47 +164,21 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _tabLayouts() {
-    return Container(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 15.0),
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                  color: Color(AppColors.homeboxGrey),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  )),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 12.0),
-                    child: new TabBar(
-                        isScrollable: true,
-                        unselectedLabelColor: Colors.grey,
-                        labelColor: Colors.white,
-                        indicatorSize: TabBarIndicatorSize.tab,
-                        indicator: new BubbleTabIndicator(
-                          indicatorHeight: 25.0,
-                          indicatorColor: Color(AppColors.commonOrange),
-                          tabBarIndicatorSize: TabBarIndicatorSize.tab,
-                          // Other flags
-                          // indicatorRadius: 1,
-                          // insets: EdgeInsets.all(1),
-                          // padding: EdgeInsets.all(10)
-                        ),
-                        tabs: tabs,
-                        controller: _tabController),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+    return TabBar(
+        isScrollable: true,
+        unselectedLabelColor: Colors.grey,
+        labelColor: Colors.white,
+        indicatorSize: TabBarIndicatorSize.tab,
+        onTap: (no){
+          //TODO Implement click
+        },
+        indicator: BubbleTabIndicator(
+          indicatorHeight: 25.0,
+          indicatorColor: Color(AppColors.commonOrange),
+          tabBarIndicatorSize: TabBarIndicatorSize.tab,
+        ),
+        tabs: tabs,
+        controller: _tabController);
   }
 
   Widget _categoryWidget() {
