@@ -25,3 +25,26 @@ class Header {
     );
   }
 }
+
+class Product {
+  final String name;
+  final String id;
+  final String rentPrice;
+  final String salePrice;
+
+  Product({
+    required this.id,
+    required this.name,
+    required this.rentPrice,
+    required this.salePrice,
+  });
+
+  factory Product.fromJson(Map<String, dynamic> json){
+    return Product(
+      id: json['prod_id'].toString(),
+      name: json['prod_name'].toString(),
+      rentPrice: json['prod_rental_price'].toString(),
+      salePrice: json['prod_sale_price'].toString(),
+    );
+  }
+}
