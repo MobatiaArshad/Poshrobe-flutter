@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage>
   List<Tab> tabs=[];
   List<Header> headers=[];
   List<Product> featuredProducts=[];
+  List<Product> recommendedProducts=[];
 
   late Future _future;
   String selectedCategory="475";
@@ -49,6 +50,14 @@ class _HomePageState extends State<HomePage>
                 (value) {
               value.forEach((element) {
                 featuredProducts.add(element);
+              });
+
+            }
+        ),
+        getRecommendedProducts().then(
+                (value) {
+              value.forEach((element) {
+                recommendedProducts.add(element);
               });
 
             }
@@ -540,73 +549,72 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _recommendedListData(int index) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8.0),
-      child: Container(
-        width: 155,
-        height: 248,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image(
-              image: AssetImage('images/recomended_img.png'),
-              width: 155,
-              height: 173,
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: Row(
-                children: [
-                  Text('Rs 2,999',style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4.0),
-                    child: Text('/ Rental',style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 13),),
-                  ),
-                ],
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(top: 3.0),
-              child: Row(
-                children: [
-                  Text('Rs 28,999',style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4.0),
-                    child: Text('/ Sale',style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 13),),
-                  ),
-                ],
-              ),
-            ),
-
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: SizedBox(
-                width: 185.0,
-                child: Text(
-                  "Embroidered Pista Green Sherwani",
-                  maxLines: 4,
-                  overflow: TextOverflow.ellipsis,
-                  softWrap: false,
-                  style: TextStyle(color: Colors.black87, fontSize: 12.0),
+    return ListView.builder(
+        itemCount: recommendedProducts.length,
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        physics: ScrollPhysics(),
+        itemBuilder: (BuildContext context, int index){
+          return Container(
+            margin: EdgeInsets.only(right: screenWidth(context, mulBy: 0.03)),
+            width: 155,
+            height: 248,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Image(
+                  image: AssetImage('images/recomended_img.png'),
+                  width: 155,
+                  height: 173,
                 ),
-              ),
-            ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    children: [
+                      Text("Rs. ${recommendedProducts[index].rentPrice.toString().split(".")[0]}",style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),),
+                      Text(' / Rental',style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 13),),
+                    ],
+                  ),
+                ),
 
-          ],
-        ),
-      ),
-    );
+                Padding(
+                  padding: const EdgeInsets.only(top: 3.0),
+                  child: Row(
+                    children: [
+                      Text("Rs. ${recommendedProducts[index].rentPrice.toString().split(".")[0]}",style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),),
+                      Text(' / Sale',style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 13),),
+                    ],
+                  ),
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: SizedBox(
+                    width: 185.0,
+                    child: Text(
+                      recommendedProducts[index].name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: false,
+                      style: TextStyle(color: Colors.black87, fontSize: 12.0),
+                    ),
+                  ),
+                ),
+
+              ],
+            ),
+          );
+        });
   }
 }
 
