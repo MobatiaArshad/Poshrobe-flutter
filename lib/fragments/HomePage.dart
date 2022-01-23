@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:bubble_tab_indicator/bubble_tab_indicator.dart';
 import 'package:flutter/rendering.dart';
 import 'package:poshrob/Resources/AppColors.dart';
+import 'package:poshrob/accounts/LoginPage.dart';
 import 'package:poshrob/backend/backend_class.dart';
 import 'package:poshrob/backend/backend_data.dart';
+import 'package:poshrob/shared_pref.dart';
 
 import '../sizes.dart';
 
@@ -92,10 +94,17 @@ class _HomePageState extends State<HomePage>
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 30),
-                  child: Image(
-                    image: AssetImage('images/hamburger_ico.png'),
+                InkWell(
+                  onTap: (){
+                    HelperFunctions.saveUserLoggedIn(false);
+                    Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
+                    LoginPage()), (Route<dynamic> route) => false);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30),
+                    child: Image(
+                      image: AssetImage('images/hamburger_ico.png'),
+                    ),
                   ),
                 ),
                 Image(
