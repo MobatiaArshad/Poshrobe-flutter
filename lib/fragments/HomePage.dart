@@ -7,6 +7,8 @@ import 'package:poshrob/Resources/AppColors.dart';
 import 'package:poshrob/backend/backend_class.dart';
 import 'package:poshrob/backend/backend_data.dart';
 
+import '../sizes.dart';
+
 class HomePage extends StatefulWidget {
   @override
   _HomePageState createState() => _HomePageState();
@@ -23,43 +25,42 @@ class _HomePageState extends State<HomePage>
     'Monica Geller'
   ];
 
-  final List<Tab> tabs1 = <Tab>[
-    new Tab(text: "Sherwani"),
-    new Tab(text: "Indo Western"),
-    new Tab(text: "Tuxedo"),
-    new Tab(text: "Suits"),
-    new Tab(text: "Jodhpuri"),
-    new Tab(text: "Kurtha Pyjama"),
-    new Tab(text: "Bundi Jacket")
-  ];
 
   List<Tab> tabs=[];
+  List<Header> headers=[];
+
+  late Future _future;
+  String selectedCategory="475";
 
   Future _getHomeContents() async {
     try {
       await Future.wait([
         getHeaderCategories().then(
                 (value) {
-                  value.map((e) => tabs.add(Tab(text: e.name, )));
+                  value.forEach((element) {
+                    tabs.add(Tab(text: element.name, ));
+                    headers.add(element);
+                  });
+
                 }
         ),
       ]);
+      return tabs;
     } catch (e) {
       rethrow;
     }
   }
 
-  TabController? _tabController;
 
   @override
   void initState() {
+    _future = _getHomeContents();
     super.initState();
-    _tabController = new TabController(vsync: this, length: tabs1.length);
   }
 
   @override
   void dispose() {
-    _tabController!.dispose();
+    tabs.clear();
     super.dispose();
   }
 
@@ -91,20 +92,34 @@ class _HomePageState extends State<HomePage>
               ],
             ),
           ),
-          Flexible(
-              child: ListView(
-                padding: const EdgeInsets.all(8),
-                shrinkWrap: true,
-                physics: ScrollPhysics(),
-                children: <Widget>[
-                  _topbar(),
-                  _tabLayouts(),
-                  _categoryWidget(),
-                  _setFeaturedProduct(),
-                  _setRecommendedList()
-                ],
-              )
-          )
+          FutureBuilder(
+            future: _future,
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.hasData) {
+                return Flexible(
+                    child: ListView(
+                      padding: const EdgeInsets.all(8),
+                      shrinkWrap: true,
+                      physics: ScrollPhysics(),
+                      children: <Widget>[
+                        //_topbar(),
+                        _tabLayouts(),
+                        _tabProducts(),
+                        _categoryWidget(),
+                        _setFeaturedProduct(),
+                        _setRecommendedList()
+                      ],
+                    )
+                );
+              }
+              return SizedBox(
+                  height: screenHeight(context, mulBy: 0.3),
+                  child: Center(child: CircularProgressIndicator(
+                    color: Color(AppColors.commonOrange),
+                  )));
+            },
+          ),
+
         ],
       ),
     );
@@ -164,21 +179,88 @@ class _HomePageState extends State<HomePage>
   }
 
   Widget _tabLayouts() {
-    return TabBar(
+    return DefaultTabController(
+      length: tabs.length,
+      child: TabBar(
         isScrollable: true,
         unselectedLabelColor: Colors.grey,
         labelColor: Colors.white,
         indicatorSize: TabBarIndicatorSize.tab,
         onTap: (no){
-          //TODO Implement click
+          selectedCategory= headers[no].id;
         },
         indicator: BubbleTabIndicator(
           indicatorHeight: 25.0,
           indicatorColor: Color(AppColors.commonOrange),
           tabBarIndicatorSize: TabBarIndicatorSize.tab,
         ),
-        tabs: tabs,
-        controller: _tabController);
+        tabs: tabs,),
+    );
+  }
+
+  Widget _tabProducts() {
+    return Container(
+      height: screenHeight(context, mulBy: 0.6),
+      width: screenWidth(context),
+      color: Colors.redAccent,
+      child: FutureBuilder(
+        future: getCategoryProducts(selectedCategory),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.hasData) {
+            return GridView.builder(
+              physics: const ScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: snapshot.data!.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  childAspectRatio: 0.8,
+                  crossAxisCount:  2 ),
+              itemBuilder: (context, index) {
+                return InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => ProductDetails(
+                          product: snapshot.data[index],
+                        )));
+                  },
+
+                  child: Card(
+                    margin: (index%2!=0)?const EdgeInsets.only(right: 10, left: 5, bottom: 10):const EdgeInsets.only(left: 10, right: 5, bottom: 10),
+                    color: Colors.white,
+                    elevation: 1,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                            height: screenHeight(context, mulBy: 0.25),
+                            child: Image.network(snapshot.data[index].image, fit: BoxFit.cover,)),
+                        Text(
+                          snapshot.data[index].name,
+                          style: const TextStyle(
+                              color: Colors.black
+                          ),
+                        ),
+                        SizedBox(
+                          height: screenHeight(context, mulBy: 0.01),
+                        ),
+                        Text(
+                          snapshot.data[index].bottleType,
+                          style: TextStyle(
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.w700
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                );
+              },
+            );
+          }
+          return SizedBox(
+              height: screenHeight(context, mulBy: 0.3),
+              child: const Center(child: CircularProgressIndicator()));
+        },
+      ),
+    );
   }
 
   Widget _categoryWidget() {
@@ -494,3 +576,4 @@ class _HomePageState extends State<HomePage>
     );
   }
 }
+
