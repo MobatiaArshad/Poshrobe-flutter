@@ -28,6 +28,7 @@ class _HomePageState extends State<HomePage>
 
   List<Tab> tabs=[];
   List<Header> headers=[];
+  List<Product> featuredProducts=[];
 
   late Future _future;
   String selectedCategory="475";
@@ -43,6 +44,14 @@ class _HomePageState extends State<HomePage>
                   });
 
                 }
+        ),
+        getFeaturedProducts().then(
+                (value) {
+              value.forEach((element) {
+                featuredProducts.add(element);
+              });
+
+            }
         ),
       ]);
       return tabs;
@@ -401,19 +410,7 @@ class _HomePageState extends State<HomePage>
                 child:
                 Padding(
                   padding: const EdgeInsets.only(left: 13.0,right: 13.0,top: 10.0),
-                  child: ListView.builder(
-                    // make sure to add the following lines:
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                      itemCount: homeArray.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          child: _featureListData(index),
-                        );
-                      }
-                    // the rest of your list view code
-                  ),
+                  child: _featureListData(),
                 ) // ListView
             )
 
@@ -424,10 +421,15 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Widget _featureListData(int index) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 8.0),
-      child: Container(
+  Widget _featureListData() {
+    return ListView.builder(
+      itemCount: featuredProducts.length,
+        scrollDirection: Axis.horizontal,
+        shrinkWrap: true,
+        physics: ScrollPhysics(),
+        itemBuilder: (BuildContext context, int index){
+      return Container(
+        margin: EdgeInsets.only(right: screenWidth(context, mulBy: 0.03)),
         width: 155,
         height: 248,
         child: Column(
@@ -442,16 +444,13 @@ class _HomePageState extends State<HomePage>
               padding: const EdgeInsets.only(top: 8.0),
               child: Row(
                 children: [
-                  Text('Rs 2,999',style: TextStyle(
+                  Text("Rs. ${featuredProducts[index].rentPrice.toString().split(".")[0]}",style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 16),),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4.0),
-                    child: Text('/ Rental',style: TextStyle(
+                  Text(' / Rental',style: TextStyle(
                       color: Colors.grey,
-                        fontSize: 13),),
-                  ),
+                      fontSize: 13),),
                 ],
               ),
             ),
@@ -460,16 +459,13 @@ class _HomePageState extends State<HomePage>
               padding: const EdgeInsets.only(top: 3.0),
               child: Row(
                 children: [
-                  Text('Rs 28,999',style: TextStyle(
+                  Text("Rs. ${featuredProducts[index].rentPrice.toString().split(".")[0]}",style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: 16),),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4.0),
-                    child: Text('/ Sale',style: TextStyle(
+                  Text(' / Sale',style: TextStyle(
                       color: Colors.grey,
-                        fontSize: 13),),
-                  ),
+                      fontSize: 13),),
                 ],
               ),
             ),
@@ -479,8 +475,8 @@ class _HomePageState extends State<HomePage>
               child: SizedBox(
                 width: 185.0,
                 child: Text(
-                  "Embroidered Pista Green Sherwani",
-                  maxLines: 4,
+                  featuredProducts[index].name,
+                  maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   softWrap: false,
                   style: TextStyle(color: Colors.black87, fontSize: 12.0),
@@ -490,8 +486,8 @@ class _HomePageState extends State<HomePage>
 
           ],
         ),
-      ),
-    );
+      );
+    });
   }
 
   Widget _setRecommendedList() {
