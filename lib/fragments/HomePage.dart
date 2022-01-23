@@ -187,7 +187,9 @@ class _HomePageState extends State<HomePage>
         labelColor: Colors.white,
         indicatorSize: TabBarIndicatorSize.tab,
         onTap: (no){
-          selectedCategory= headers[no].id;
+          setState(() {
+            selectedCategory= headers[no].id;
+          });
         },
         indicator: BubbleTabIndicator(
           indicatorHeight: 25.0,
@@ -200,9 +202,8 @@ class _HomePageState extends State<HomePage>
 
   Widget _tabProducts() {
     return Container(
-      height: screenHeight(context, mulBy: 0.6),
+      height: screenHeight(context, mulBy: 0.62),
       width: screenWidth(context),
-      color: Colors.redAccent,
       child: FutureBuilder(
         future: getCategoryProducts(selectedCategory),
         builder: (context, AsyncSnapshot snapshot) {
@@ -210,44 +211,80 @@ class _HomePageState extends State<HomePage>
             return GridView.builder(
               physics: const ScrollPhysics(),
               shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
               itemCount: snapshot.data!.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  childAspectRatio: 0.8,
+                  childAspectRatio: 1.1,
                   crossAxisCount:  2 ),
               itemBuilder: (context, index) {
                 return InkWell(
                   onTap: () {
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (context) => ProductDetails(
-                          product: snapshot.data[index],
-                        )));
                   },
-
                   child: Card(
-                    margin: (index%2!=0)?const EdgeInsets.only(right: 10, left: 5, bottom: 10):const EdgeInsets.only(left: 10, right: 5, bottom: 10),
-                    color: Colors.white,
-                    elevation: 1,
-                    child: Column(
+                    color: Colors.transparent,
+                    shadowColor: Colors.transparent,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Stack(
+                      alignment: Alignment.bottomCenter,
                       children: [
-                        SizedBox(
-                            height: screenHeight(context, mulBy: 0.25),
-                            child: Image.network(snapshot.data[index].image, fit: BoxFit.cover,)),
-                        Text(
-                          snapshot.data[index].name,
-                          style: const TextStyle(
-                              color: Colors.black
+                        Image.asset(
+                          'images/recomended_img.png',
+                          height: screenHeight(context, mulBy: 0.3),
+                          fit: BoxFit.fill,
+                        ),
+                        Container(
+                          height: screenHeight(context, mulBy: 0.15),
+                          alignment: Alignment.bottomCenter,
+                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                                begin: Alignment.bottomCenter,
+                                end: Alignment.topCenter,
+                                colors: [Colors.black, Colors.transparent]),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Row(
+                                children: [
+                                  Text("Rs. ${snapshot.data[index].rentPrice.toString().split(".")[0]}",style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),),
+                                  Text(' / Rental',style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 13),),
+                                ],
+                              ),
+
+                              Row(
+                                children: [
+                                  Text("Rs. ${snapshot.data[index].salePrice.toString().split(".")[0]}",style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16),),
+                                  Text(' / Sale',style: TextStyle(
+                                      color: Colors.grey,
+                                      fontSize: 13),),
+                                ],
+                              ),
+
+                              Text(
+                                snapshot.data[index].name,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: false,
+                                style: TextStyle(color: Colors.white60, fontSize: 12.0),
+                              ),
+
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          height: screenHeight(context, mulBy: 0.01),
-                        ),
-                        Text(
-                          snapshot.data[index].bottleType,
-                          style: TextStyle(
-                              color: Theme.of(context).primaryColor,
-                              fontWeight: FontWeight.w700
-                          ),
-                        )
+
                       ],
                     ),
                   ),
