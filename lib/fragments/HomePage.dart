@@ -312,7 +312,9 @@ class _HomePageState extends State<HomePage>
           }
           return SizedBox(
               height: screenHeight(context, mulBy: 0.3),
-              child: const Center(child: CircularProgressIndicator()));
+              child: Center(child: CircularProgressIndicator(
+                color: Color(AppColors.commonOrange),
+              )));
         },
       ),
     );
@@ -527,19 +529,7 @@ class _HomePageState extends State<HomePage>
               child:
               Padding(
                 padding: const EdgeInsets.only(left: 13.0,right: 13.0,top: 10.0),
-                child: ListView.builder(
-                  // make sure to add the following lines:
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    physics: ScrollPhysics(),
-                    itemCount: homeArray.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Container(
-                        child: _recommendedListData(index),
-                      );
-                    }
-                  // the rest of your list view code
-                ),
+                child: _recommendedListData(),
               ) // ListView
           )
 
@@ -548,7 +538,7 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-  Widget _recommendedListData(int index) {
+  Widget _recommendedListData() {
     return ListView.builder(
         itemCount: recommendedProducts.length,
         scrollDirection: Axis.horizontal,
