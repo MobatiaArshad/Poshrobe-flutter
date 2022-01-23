@@ -58,3 +58,16 @@ Future<List<Product>> getFeaturedProducts() async {
   }
   return products;
 }
+
+Future<List<Product>> getRecommendedProducts() async {
+  final http.Response response = await http.get(
+    Uri.parse('https://poshrobe.com/home/homepage_recommended_products'),
+  );
+  var products = <Product>[];
+  if (response.statusCode == 200) {
+
+    var productJson = json.decode(response.body);
+    products= List<Product>.from(productJson.map((model)=> Product.fromJson(model)));
+  }
+  return products;
+}
