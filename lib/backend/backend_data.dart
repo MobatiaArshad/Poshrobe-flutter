@@ -26,9 +26,22 @@ Future<List<Header>> getHeaderCategories() async {
   );
   var headers = <Header>[];
   if (response.statusCode == 200) {
-    print(response.body);
+
     var headerJson = json.decode(response.body);
     headers= List<Header>.from(headerJson.map((model)=> Header.fromJson(model)));
   }
   return headers;
+}
+
+Future<List<Product>> getCategoryProducts(String catID) async {
+  final http.Response response = await http.get(
+    Uri.parse('https://poshrobe.com/products/get_category_product/$catID'),
+  );
+  var products = <Product>[];
+  if (response.statusCode == 200) {
+
+    var productJson = json.decode(response.body);
+    products= List<Product>.from(productJson.map((model)=> Product.fromJson(model)));
+  }
+  return products;
 }
